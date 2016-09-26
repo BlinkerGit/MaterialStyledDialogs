@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -121,7 +122,7 @@ public class MaterialStyledDialog {
         ImageView dialogHeader = (ImageView) contentView.findViewById(R.id.md_styled_header);
         ImageView dialogPic = (ImageView) contentView.findViewById(R.id.md_styled_header_pic);
         TextView dialogTitle = (TextView) contentView.findViewById(R.id.md_styled_dialog_title);
-        TextView dialogDescription = (TextView) contentView.findViewById(R.id.md_styled_dialog_description);
+        TextView dialogContent = (TextView) contentView.findViewById(R.id.md_styled_dialog_description);
         FrameLayout dialogCustomViewGroup = (FrameLayout) contentView.findViewById(R.id.md_styled_dialog_custom_view);
         View dialogDivider = contentView.findViewById(R.id.md_styled_dialog_divider);
 
@@ -158,20 +159,20 @@ public class MaterialStyledDialog {
             dialogTitle.setVisibility(View.GONE);
         }
 
-        // Set dialog description
-        if (builder.description != null && builder.description.length() != 0) {
-            dialogDescription.setText(builder.description);
+        // Set dialog content
+        if (builder.content != null && builder.content.length() != 0) {
+            dialogContent.setText(builder.content);
 
             // Set scrollable
-            dialogDescription.setVerticalScrollBarEnabled(builder.isScrollable);
+            dialogContent.setVerticalScrollBarEnabled(builder.isScrollable);
             if (builder.isScrollable) {
-                dialogDescription.setMaxLines(builder.maxLines);
-                dialogDescription.setMovementMethod(new ScrollingMovementMethod());
+                dialogContent.setMaxLines(builder.maxLines);
+                dialogContent.setMovementMethod(new ScrollingMovementMethod());
             } else {
-                dialogDescription.setMaxLines(Integer.MAX_VALUE);
+                dialogContent.setMaxLines(Integer.MAX_VALUE);
             }
         } else {
-            dialogDescription.setVisibility(View.GONE);
+            dialogContent.setVisibility(View.GONE);
         }
 
         // Set icon animation
@@ -189,6 +190,31 @@ public class MaterialStyledDialog {
         return contentView;
     }
 
+    public TextView getTitleView() {
+        if (mBuilder == null || mBuilder.dialog == null) return null;
+        return mBuilder.dialog.getTitleView();
+    }
+
+    public TextView getContentView() {
+        if (mBuilder == null || mBuilder.dialog == null) return null;
+        return mBuilder.dialog.getContentView();
+    }
+
+    public RecyclerView getRecyclerView() {
+        if (mBuilder == null || mBuilder.dialog == null) return null;
+        return mBuilder.dialog.getRecyclerView();
+    }
+
+    public ImageView getIconView() {
+        if (mBuilder == null || mBuilder.dialog == null) return null;
+        return mBuilder.dialog.getIconView();
+    }
+
+    public View getCustomView() {
+        if (mBuilder == null || mBuilder.dialog == null) return null;
+        return mBuilder.dialog.getCustomView();
+    }
+
     public static class Builder implements IBuilder {
         protected Context context;
 
@@ -200,7 +226,7 @@ public class MaterialStyledDialog {
         protected boolean isIconAnimation, isDialogAnimation, isDialogDivider, isCancelable, isScrollable, isDarkerOverlay, isAutoDismiss; // withIconAnimation(), withDialogAnimation(), withDivider(), setCancelable(), setScrollable(), withDarkerOverlay(), autoDismiss()
         protected Drawable headerDrawable, iconDrawable; // setHeaderDrawable(), setIconDrawable()
         protected Integer primaryColor, maxLines; // setHeaderColor(), setScrollable()
-        protected CharSequence title, description; // setTitle(), setDescription()
+        protected CharSequence title, content; // setTitle(), setDescription()
         protected View customView; // setCustomView()
         protected int customViewPaddingLeft, customViewPaddingTop, customViewPaddingRight, customViewPaddingBottom;
         protected ImageView.ScaleType headerScaleType;
@@ -246,7 +272,7 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setStyle(Style style) {
+        public Builder style(Style style) {
             this.style = style;
             return this;
         }
@@ -283,61 +309,61 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setIcon(@NonNull Drawable icon) {
+        public Builder icon(@NonNull Drawable icon) {
             this.iconDrawable = icon;
             return this;
         }
 
         @Override
-        public Builder setIcon(@DrawableRes Integer iconRes) {
+        public Builder icon(@DrawableRes Integer iconRes) {
             this.iconDrawable = ResourcesCompat.getDrawable(context.getResources(), iconRes, null);
             return this;
         }
 
         @Override
-        public Builder setTitle(@StringRes int titleRes) {
-            setTitle(this.context.getString(titleRes));
+        public Builder title(@StringRes int titleRes) {
+            title(this.context.getString(titleRes));
             return this;
         }
 
         @Override
-        public Builder setTitle(@NonNull CharSequence title) {
+        public Builder title(@NonNull CharSequence title) {
             this.title = title;
             return this;
         }
 
         @Override
-        public Builder setDescription(@StringRes int descriptionRes) {
-            setDescription(this.context.getString(descriptionRes));
+        public Builder content(@StringRes int descriptionRes) {
+            content(this.context.getString(descriptionRes));
             return this;
         }
 
         @Override
-        public Builder setDescription(@NonNull CharSequence description) {
-            this.description = description;
+        public Builder content(@NonNull CharSequence description) {
+            this.content = description;
             return this;
         }
 
         @Override
-        public Builder setHeaderColor(@ColorRes int color) {
+        public Builder headerColor(@ColorRes int color) {
             this.primaryColor = UtilsLibrary.getColor(context, color);
             return this;
         }
 
         @Override
-        public Builder setHeaderColorInt(@ColorInt int color) {
+        public Builder headerColorInt(@ColorInt int color) {
             this.primaryColor = color;
             return this;
         }
 
         @Override
-        public Builder setHeaderDrawable(@NonNull Drawable drawable) {
+        public Builder headerDrawable(@NonNull Drawable drawable) {
             this.headerDrawable = drawable;
             return this;
         }
 
         @Override
-        public Builder setHeaderDrawable(@DrawableRes Integer drawableRes) {
+        public Builder headerDrawable(@DrawableRes Integer drawableRes) {
             this.headerDrawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, null);
             return this;
         }
@@ -351,13 +377,13 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setPositiveText(@StringRes int buttonTextRes) {
-            setPositiveText(this.context.getString(buttonTextRes));
+        public Builder positiveText(@StringRes int buttonTextRes) {
+            positiveText(this.context.getString(buttonTextRes));
             return this;
         }
 
         @Override
-        public Builder setPositiveText(@NonNull CharSequence buttonText) {
+        public Builder positiveText(@NonNull CharSequence buttonText) {
             this.positive = buttonText;
             return this;
         }
@@ -377,13 +403,13 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setNegativeText(@StringRes int buttonTextRes) {
-            setNegativeText(this.context.getString(buttonTextRes));
+        public Builder negativeText(@StringRes int buttonTextRes) {
+            negativeText(this.context.getString(buttonTextRes));
             return this;
         }
 
         @Override
-        public Builder setNegativeText(@NonNull CharSequence buttonText) {
+        public Builder negativeText(@NonNull CharSequence buttonText) {
             this.negative = buttonText;
             return this;
         }
@@ -403,13 +429,13 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setNeutralText(@StringRes int buttonTextRes) {
-            setNeutralText(this.context.getString(buttonTextRes));
+        public Builder neutralText(@StringRes int buttonTextRes) {
+            neutralText(this.context.getString(buttonTextRes));
             return this;
         }
 
         @Override
-        public Builder setNeutralText(@NonNull CharSequence buttonText) {
+        public Builder neutralText(@NonNull CharSequence buttonText) {
             this.neutral = buttonText;
             return this;
         }
@@ -421,25 +447,25 @@ public class MaterialStyledDialog {
         }
 
         @Override
-        public Builder setHeaderScaleType(ImageView.ScaleType scaleType) {
+        public Builder headerScaleType(ImageView.ScaleType scaleType) {
             this.headerScaleType = scaleType;
             return this;
         }
 
         @Override
-        public Builder setCancelable(Boolean cancelable) {
+        public Builder cancelable(Boolean cancelable) {
             this.isCancelable = cancelable;
             return this;
         }
 
         @Override
-        public Builder setScrollable(Boolean scrollable) {
+        public Builder scrollable(Boolean scrollable) {
             this.isScrollable = scrollable;
             return this;
         }
 
         @Override
-        public Builder setScrollable(Boolean scrollable, Integer maxLines) {
+        public Builder scrollable(Boolean scrollable, Integer maxLines) {
             this.isScrollable = scrollable;
             this.maxLines = maxLines;
             return this;
