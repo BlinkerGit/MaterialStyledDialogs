@@ -2,6 +2,7 @@ package com.github.javiersantos.materialstyleddialogs;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -81,6 +82,9 @@ public class MaterialStyledDialog {
 
         // Set auto dismiss when touching the buttons
         dialogBuilder.autoDismiss(builder.isAutoDismiss);
+
+        if (builder.dismissListener != null)
+            dialogBuilder.dismissListener(builder.dismissListener);
 
         // Build the dialog with the previous configuration
         MaterialDialog materialDialog = dialogBuilder.build();
@@ -234,6 +238,7 @@ public class MaterialStyledDialog {
         // .setPositive(), setNegative() and setNeutral()
         protected CharSequence positive, negative, neutral;
         protected MaterialDialog.SingleButtonCallback positiveCallback, negativeCallback, neutralCallback;
+        protected DialogInterface.OnDismissListener dismissListener;
 
         public Builder(Context context) {
             this.context = context;
@@ -474,6 +479,12 @@ public class MaterialStyledDialog {
         @Override
         public Builder autoDismiss(Boolean dismiss) {
             this.isAutoDismiss = dismiss;
+            return this;
+        }
+
+        @Override
+        public Builder dismissListener(DialogInterface.OnDismissListener onDismissListener) {
+            this.dismissListener = onDismissListener;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package com.github.javiersantos.materialstyleddialogs;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -306,5 +307,13 @@ public interface IBuilder {
      * @return this
      */
     MaterialStyledDialog.Builder autoDismiss(Boolean dismiss);
+
+  /**
+   * Set listener to be triggered when dismissing dialog
+   *
+   * @param onDismissListener the listener to be set
+   * @return this
+   */
+  MaterialStyledDialog.Builder dismissListener(DialogInterface.OnDismissListener onDismissListener);
 
 }
