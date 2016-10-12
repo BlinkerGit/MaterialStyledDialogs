@@ -224,6 +224,10 @@ public class MaterialStyledDialog {
     return (FrameLayout) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_dialog_custom_view);
   }
 
+  public View getView() {
+    return mBuilder != null && mBuilder.dialog != null ? mBuilder.dialog.getCustomView() : null;
+  }
+
   public static class Builder implements IBuilder {
     protected Context context;
 

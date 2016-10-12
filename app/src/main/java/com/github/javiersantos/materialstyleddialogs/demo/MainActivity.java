@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         dialogHeaderView_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogHeader_1.show();
+              ((TextView)dialogHeader_1.show().getView().findViewById(R.id.md_styled_dialog_description)).setText("Farts");
             }
         });
 
