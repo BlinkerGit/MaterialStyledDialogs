@@ -16,12 +16,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.OnInflateListener;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.utils.Utils;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,10 +57,17 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName())));
                     }
                 })
+                .onInflate(new OnInflateListener() {
+                  @Override
+                  public void onInflate(MaterialDialog dialog) {
+                    Toast.makeText(MainActivity.this, "Dialog inflated!", Toast.LENGTH_LONG).show();
+                  }
+                })
                 .negativeText("Later");
 
         final MaterialStyledDialog.Builder dialogHeader_2 = new MaterialStyledDialog.Builder(context)
                 .icon(new IconicsDrawable(context).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
+                .iconSize(Utils.convertDpToPx(context, 20), Utils.convertDpToPx(context, 60))
                 .withIconAnimation(false)
                 .content("What can we improve? Your feedback is always welcome.")
                 .headerColor(R.color.dialog_2)
