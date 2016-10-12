@@ -11,17 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.javiersantos.materialstyleddialogs.OnInflateListener;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.utils.Utils;
@@ -56,12 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName())));
                     }
-                })
-                .onInflate(new OnInflateListener() {
-                  @Override
-                  public void onInflate(MaterialDialog dialog) {
-                    Toast.makeText(MainActivity.this, "Dialog inflated!", Toast.LENGTH_LONG).show();
-                  }
                 })
                 .negativeText("Later");
 

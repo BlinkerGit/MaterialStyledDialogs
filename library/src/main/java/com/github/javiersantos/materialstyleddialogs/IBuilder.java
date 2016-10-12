@@ -325,12 +325,4 @@ public interface IBuilder {
    */
   MaterialStyledDialog.Builder dismissListener(DialogInterface.OnDismissListener onDismissListener);
 
-  /**
-   * Set listener to run code on the dialog once it's inflated and accessible
-   *
-   * @param inflateListener - the listener to be triggered
-   * @return this
-   */
-  MaterialStyledDialog.Builder onInflate(OnInflateListener inflateListener);
-
 }

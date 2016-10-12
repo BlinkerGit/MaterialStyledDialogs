@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,15 +37,6 @@ public class MaterialStyledDialog {
   protected MaterialStyledDialog(Builder builder) {
     mBuilder = builder;
     mBuilder.dialog = initMaterialStyledDialog(builder);
-
-    if (mBuilder.onInflateListener != null) {
-      mBuilder.dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-        @Override
-        public void onShow(DialogInterface dialogInterface) {
-          mBuilder.onInflateListener.onInflate(mBuilder.dialog);
-        }
-      });
-    }
   }
 
   @UiThread
@@ -210,28 +200,28 @@ public class MaterialStyledDialog {
   }
 
   public TextView getTitleView() {
-    if (mBuilder == null || mBuilder.dialog == null) return null;
-    return mBuilder.dialog.getTitleView();
+    if (mBuilder == null || mBuilder.dialog == null || mBuilder.dialog.getCustomView() == null) return null;
+    return (TextView) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_dialog_title);
   }
 
   public TextView getContentView() {
-    if (mBuilder == null || mBuilder.dialog == null) return null;
-    return mBuilder.dialog.getContentView();
+    if (mBuilder == null || mBuilder.dialog == null || mBuilder.dialog.getCustomView() == null) return null;
+    return (TextView) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_dialog_description);
   }
 
-  public RecyclerView getRecyclerView() {
-    if (mBuilder == null || mBuilder.dialog == null) return null;
-    return mBuilder.dialog.getRecyclerView();
+  public ImageView getHeaderView() {
+    if (mBuilder == null || mBuilder.dialog == null || mBuilder.dialog.getCustomView() == null) return null;
+    return (ImageView) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_header);
   }
 
   public ImageView getIconView() {
-    if (mBuilder == null || mBuilder.dialog == null) return null;
-    return mBuilder.dialog.getIconView();
+    if (mBuilder == null || mBuilder.dialog == null || mBuilder.dialog.getCustomView() == null) return null;
+    return (ImageView) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_header_pic);
   }
 
-  public View getCustomView() {
-    if (mBuilder == null || mBuilder.dialog == null) return null;
-    return mBuilder.dialog.getCustomView();
+  public FrameLayout getCustomView() {
+    if (mBuilder == null || mBuilder.dialog == null || mBuilder.dialog.getCustomView() == null) return null;
+    return (FrameLayout) mBuilder.dialog.getCustomView().findViewById(R.id.md_styled_dialog_custom_view);
   }
 
   public static class Builder implements IBuilder {
@@ -254,7 +244,6 @@ public class MaterialStyledDialog {
     protected CharSequence positive, negative, neutral;
     protected MaterialDialog.SingleButtonCallback positiveCallback, negativeCallback, neutralCallback;
     protected DialogInterface.OnDismissListener dismissListener;
-    protected OnInflateListener onInflateListener;
     protected Integer iconWidth, iconHeight;
 
     public Builder(Context context) {
@@ -509,12 +498,6 @@ public class MaterialStyledDialog {
     @Override
     public Builder dismissListener(DialogInterface.OnDismissListener onDismissListener) {
       this.dismissListener = onDismissListener;
-      return this;
-    }
-
-    @Override
-    public Builder onInflate(OnInflateListener inflateListener) {
-      this.onInflateListener = inflateListener;
       return this;
     }
 
