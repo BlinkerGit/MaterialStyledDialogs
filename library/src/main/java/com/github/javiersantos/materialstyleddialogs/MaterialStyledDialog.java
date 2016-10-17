@@ -3,11 +3,13 @@ package com.github.javiersantos.materialstyleddialogs;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -15,6 +17,7 @@ import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -164,6 +167,9 @@ public class MaterialStyledDialog {
     // Set dialog title
     if (builder.title != null && builder.title.length() != 0) {
       dialogTitle.setText(builder.title);
+      if (builder.titleSize != null) {
+        dialogTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, builder.titleSize);
+      }
     } else {
       dialogTitle.setVisibility(View.GONE);
     }
@@ -171,6 +177,10 @@ public class MaterialStyledDialog {
     // Set dialog content
     if (builder.content != null && builder.content.length() != 0) {
       dialogContent.setText(builder.content);
+
+      if (builder.contentSize != null) {
+        dialogTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, builder.contentSize);
+      }
 
       // Set scrollable
       dialogContent.setVerticalScrollBarEnabled(builder.isScrollable);
@@ -249,6 +259,7 @@ public class MaterialStyledDialog {
     protected MaterialDialog.SingleButtonCallback positiveCallback, negativeCallback, neutralCallback;
     protected DialogInterface.OnDismissListener dismissListener;
     protected Integer iconWidth, iconHeight;
+    protected Float titleSize, contentSize;
 
     public Builder(Context context) {
       this.context = context;
@@ -343,6 +354,22 @@ public class MaterialStyledDialog {
     }
 
     @Override
+    public Builder iconSize(int pixSize) {
+      return iconSize(pixSize, pixSize);
+    }
+
+    @Override
+    public Builder iconSizeId(@DimenRes int pixSizeId) {
+      return iconSize(context.getResources().getDimensionPixelSize(pixSizeId));
+    }
+
+    @Override
+    public Builder iconSizeIds(@DimenRes int pixWidthId, @DimenRes int pixHeightId) {
+      Resources res = context.getResources();
+      return iconSize(res.getDimensionPixelSize(pixWidthId), res.getDimensionPixelOffset(pixHeightId));
+    }
+
+    @Override
     public Builder title(@StringRes int titleRes) {
       title(this.context.getString(titleRes));
       return this;
@@ -355,6 +382,17 @@ public class MaterialStyledDialog {
     }
 
     @Override
+    public Builder titleSizeId(@DimenRes int titleDimen) {
+      return titleSize(context.getResources().getDimension(titleDimen));
+    }
+
+    @Override
+    public Builder titleSize(float titleSize) {
+      this.titleSize = titleSize;
+      return this;
+    }
+
+    @Override
     public Builder content(@StringRes int descriptionRes) {
       content(this.context.getString(descriptionRes));
       return this;
@@ -363,6 +401,17 @@ public class MaterialStyledDialog {
     @Override
     public Builder content(@NonNull CharSequence description) {
       this.content = description;
+      return this;
+    }
+
+    @Override
+    public Builder contentSizeId(@DimenRes int contentDimen) {
+      return contentSize(context.getResources().getDimension(contentDimen));
+    }
+
+    @Override
+    public Builder contentSize(float contentSize) {
+      this.contentSize = contentSize;
       return this;
     }
 

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -112,6 +113,31 @@ public interface IBuilder {
   MaterialStyledDialog.Builder iconSize(int pixWidth, int pixHeight);
 
   /**
+   * Set custom icon size to override default
+   *
+   * @param pixSize the width and height of the icon in pixels
+   * @return this
+   */
+  MaterialStyledDialog.Builder iconSize(int pixSize);
+
+  /**
+   * Set custom icon size to override default
+   *
+   * @param pixSizeId the width and height of the icon in pixels resource
+   * @return this
+   */
+  MaterialStyledDialog.Builder iconSizeId(@DimenRes int pixSizeId);
+
+  /**
+   * Set custom icon size to override default
+   *
+   * @param pixWidthId the width of the icon in pixels resource
+   * @param pixHeightId the height of the icon in pixels resource
+   * @return this
+   */
+  MaterialStyledDialog.Builder iconSizeIds(@DimenRes int pixWidthId, @DimenRes int pixHeightId);
+
+  /**
    * Set a title for the dialog
    *
    * @param titleRes to show
@@ -128,6 +154,22 @@ public interface IBuilder {
   MaterialStyledDialog.Builder title(@NonNull CharSequence title);
 
   /**
+   * Sets title text size from id
+   *
+   * @param titleDimen resource id representing title size
+   * @return this
+   */
+  MaterialStyledDialog.Builder titleSizeId(@DimenRes int titleDimen);
+
+  /**
+   * Sets title text size from pixels
+   *
+   * @param titleSize title size in pixels
+   * @return this
+   */
+  MaterialStyledDialog.Builder titleSize(float titleSize);
+
+  /**
    * Set a content for the dialog
    *
    * @param descriptionRes to show
@@ -142,6 +184,22 @@ public interface IBuilder {
    * @return this
    */
   MaterialStyledDialog.Builder content(@NonNull CharSequence description);
+
+  /**
+   * Sets content text size from id
+   *
+   * @param contentDimen resource id representing content size
+   * @return this
+   */
+  MaterialStyledDialog.Builder contentSizeId(@DimenRes int contentDimen);
+
+  /**
+   * Sets content text size from pixels
+   *
+   * @param contentSize content size in pixels
+   * @return this
+   */
+  MaterialStyledDialog.Builder contentSize(float contentSize);
 
   /**
    * Set a color for the dialog header. Default: Theme primary color.
