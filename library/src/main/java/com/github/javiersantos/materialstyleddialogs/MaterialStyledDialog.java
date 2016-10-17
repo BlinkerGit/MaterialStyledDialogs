@@ -179,7 +179,7 @@ public class MaterialStyledDialog {
       dialogContent.setText(builder.content);
 
       if (builder.contentSize != null) {
-        dialogTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, builder.contentSize);
+        dialogContent.setTextSize(TypedValue.COMPLEX_UNIT_PX, builder.contentSize);
       }
 
       // Set scrollable
