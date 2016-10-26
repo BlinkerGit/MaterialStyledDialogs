@@ -44,7 +44,7 @@ public class MaterialStyledDialog {
 
   @UiThread
   public void show() {
-    if (mBuilder != null && mBuilder.dialog != null)
+    if (mBuilder != null && mBuilder.dialog != null && !isShowing())
       mBuilder.dialog.show();
   }
 
@@ -238,6 +238,10 @@ public class MaterialStyledDialog {
     return mBuilder != null && mBuilder.dialog != null ? mBuilder.dialog.getCustomView() : null;
   }
 
+  public boolean isShowing() {
+    return getBuilder().dialog.isShowing();
+  }
+
   public static class Builder implements IBuilder {
     protected Context context;
 
@@ -264,7 +268,7 @@ public class MaterialStyledDialog {
     public Builder(Context context) {
       this.context = context;
       this.style = Style.HEADER_WITH_ICON;
-      this.isIconAnimation = true;
+      this.isIconAnimation = false;
       this.isDialogAnimation = false;
       this.isDialogDivider = false;
       this.isDarkerOverlay = false;
