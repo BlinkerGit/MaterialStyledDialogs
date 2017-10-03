@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
@@ -242,31 +243,40 @@ public class MaterialStyledDialog {
     return getBuilder().dialog.isShowing();
   }
 
-  public static class Builder implements IBuilder {
+  public static class Builder {
     protected Context context;
 
-    // build() and show()
     protected MaterialDialog dialog;
 
-    protected Style style; // setStyle()
-    protected Duration duration; // withDialogAnimation()
-    protected boolean isIconAnimation, isDialogAnimation, isDialogDivider, isCancelable, isScrollable, isDarkerOverlay, isAutoDismiss; // withIconAnimation(), withDialogAnimation(), withDivider(), setCancelable(), setScrollable(), withDarkerOverlay(), autoDismiss()
-    protected Drawable headerDrawable, iconDrawable; // setHeaderDrawable(), setIconDrawable()
-    protected Integer primaryColor, maxLines; // setHeaderColor(), setScrollable()
-    protected CharSequence title, content; // setTitle(), setDescription()
-    protected View customView; // setCustomView()
+    protected Style style;
+    protected Duration duration;
+    protected boolean isIconAnimation, isDialogAnimation, isDialogDivider, isCancelable, isScrollable, isDarkerOverlay, isAutoDismiss;
+    protected Drawable headerDrawable, iconDrawable;
+    protected Integer primaryColor, maxLines;
+    protected CharSequence title, content;
+    protected View customView;
     protected int customViewPaddingLeft, customViewPaddingTop, customViewPaddingRight, customViewPaddingBottom;
     protected ImageView.ScaleType headerScaleType;
 
-    // .setPositive(), setNegative() and setNeutral()
     protected CharSequence positive, negative, neutral;
     protected MaterialDialog.SingleButtonCallback positiveCallback, negativeCallback, neutralCallback;
     protected DialogInterface.OnDismissListener dismissListener;
     protected Integer iconWidth, iconHeight;
     protected Float titleSize, contentSize;
+    
+    // Context-dependent variables
+    protected Integer paddingLeftDp, paddingTopDp, paddingRightDp, paddingBottomDp;
+    protected Integer iconRes, pixWidthId, pixHeightId;
+    protected Integer titleRes, titleDimen, contentRes, contentDimen;
+    protected Integer headerColorRes, headerDrawableRes;
+    protected Integer positiveTextRes, negativeTextRes, neutralTextRes;
 
     public Builder(Context context) {
+      this();
       this.context = context;
+    }
+
+    public Builder() {
       this.style = Style.HEADER_WITH_ICON;
       this.isIconAnimation = false;
       this.isDialogAnimation = false;
@@ -274,14 +284,12 @@ public class MaterialStyledDialog {
       this.isDarkerOverlay = false;
       this.duration = Duration.NORMAL;
       this.isCancelable = true;
-      this.primaryColor = UtilsLibrary.getPrimaryColor(context);
       this.isScrollable = false;
       this.maxLines = 5;
       this.isAutoDismiss = true;
       this.headerScaleType = ImageView.ScaleType.CENTER_CROP;
     }
 
-    @Override
     public Builder setCustomView(View customView) {
       this.customView = customView;
       this.customViewPaddingLeft = 0;
@@ -291,268 +299,207 @@ public class MaterialStyledDialog {
       return this;
     }
 
-    @Override
     public Builder setCustomView(View customView, int left, int top, int right, int bottom) {
       this.customView = customView;
-      this.customViewPaddingLeft = UtilsLibrary.dpToPixels(context, left);
-      this.customViewPaddingRight = UtilsLibrary.dpToPixels(context, right);
-      this.customViewPaddingTop = UtilsLibrary.dpToPixels(context, top);
-      this.customViewPaddingBottom = UtilsLibrary.dpToPixels(context, bottom);
+      paddingLeftDp = left;
+      paddingTopDp = top;
+      paddingRightDp = right;
+      paddingBottomDp = bottom;
       return this;
     }
 
-    @Override
     public Builder style(Style style) {
       this.style = style;
       return this;
     }
 
-    @Override
     public Builder withIconAnimation(Boolean withAnimation) {
       this.isIconAnimation = withAnimation;
       return this;
     }
 
-    @Override
     public Builder withDialogAnimation(Boolean withAnimation) {
       this.isDialogAnimation = withAnimation;
       return this;
     }
 
-    @Override
     public Builder withDialogAnimation(Boolean withAnimation, Duration duration) {
       this.isDialogAnimation = withAnimation;
       this.duration = duration;
       return this;
     }
 
-    @Override
     public Builder withDivider(Boolean withDivider) {
       this.isDialogDivider = withDivider;
       return this;
     }
 
-    @Override
     public Builder withDarkerOverlay(Boolean withDarkerOverlay) {
       this.isDarkerOverlay = withDarkerOverlay;
       return this;
     }
 
-    @Override
     public Builder icon(@NonNull Drawable icon) {
       this.iconDrawable = icon;
       return this;
     }
 
-    @Override
     public Builder icon(@DrawableRes Integer iconRes) {
-      this.iconDrawable = ResourcesCompat.getDrawable(context.getResources(), iconRes, null);
+      this.iconRes = iconRes;
       return this;
     }
 
-    @Override
     public Builder iconSize(int pixWidth, int pixHeight) {
       this.iconWidth = pixWidth;
       this.iconHeight = pixHeight;
       return this;
     }
 
-    @Override
     public Builder iconSize(int pixSize) {
       return iconSize(pixSize, pixSize);
     }
 
-    @Override
     public Builder iconSizeId(@DimenRes int pixSizeId) {
-      return iconSize(context.getResources().getDimensionPixelSize(pixSizeId));
+      return iconSizeIds(pixSizeId, pixSizeId);
     }
 
-    @Override
     public Builder iconSizeIds(@DimenRes int pixWidthId, @DimenRes int pixHeightId) {
-      Resources res = context.getResources();
-      return iconSize(res.getDimensionPixelSize(pixWidthId), res.getDimensionPixelOffset(pixHeightId));
-    }
-
-    @Override
-    public Builder title(@StringRes int titleRes) {
-      title(this.context.getString(titleRes));
+      this.pixWidthId = pixWidthId;
+      this.pixHeightId = pixHeightId;
       return this;
     }
 
-    @Override
+    public Builder title(@StringRes int titleRes) {
+      this.titleRes = titleRes;
+      return this;
+    }
+
     public Builder title(@NonNull CharSequence title) {
       this.title = title;
       return this;
     }
 
-    @Override
     public Builder titleSizeId(@DimenRes int titleDimen) {
-      return titleSize(context.getResources().getDimension(titleDimen));
+      this.titleDimen = titleDimen;
+      return this;
     }
 
-    @Override
     public Builder titleSize(float titleSize) {
       this.titleSize = titleSize;
       return this;
     }
 
-    @Override
     public Builder content(@StringRes int descriptionRes) {
-      content(this.context.getString(descriptionRes));
+      this.contentRes = descriptionRes;
       return this;
     }
 
-    @Override
     public Builder content(@NonNull CharSequence description) {
       this.content = description;
       return this;
     }
 
-    @Override
     public Builder contentSizeId(@DimenRes int contentDimen) {
-      return contentSize(context.getResources().getDimension(contentDimen));
+      this.contentDimen = contentDimen;
+      return this;
     }
 
-    @Override
     public Builder contentSize(float contentSize) {
       this.contentSize = contentSize;
       return this;
     }
 
-    @Override
     public Builder headerColor(@ColorRes int color) {
-      this.primaryColor = UtilsLibrary.getColor(context, color);
+      this.headerColorRes = color;
       return this;
     }
 
-    @Override
     public Builder headerColorInt(@ColorInt int color) {
       this.primaryColor = color;
       return this;
     }
 
-    @Override
     public Builder headerDrawable(@NonNull Drawable drawable) {
       this.headerDrawable = drawable;
       return this;
     }
 
-    @Override
     public Builder headerDrawable(@DrawableRes Integer drawableRes) {
-      this.headerDrawable = ResourcesCompat.getDrawable(context.getResources(), drawableRes, null);
+      this.headerDrawableRes = drawableRes;
       return this;
     }
 
-    @Override
-    @Deprecated
-    public Builder setPositive(String text, MaterialDialog.SingleButtonCallback callback) {
-      this.positive = text;
-      this.positiveCallback = callback;
-      return this;
-    }
-
-    @Override
     public Builder positiveText(@StringRes int buttonTextRes) {
-      positiveText(this.context.getString(buttonTextRes));
+      this.positiveTextRes = buttonTextRes;
       return this;
     }
 
-    @Override
     public Builder positiveText(@NonNull CharSequence buttonText) {
       this.positive = buttonText;
       return this;
     }
 
-    @Override
     public Builder onPositive(@NonNull MaterialDialog.SingleButtonCallback callback) {
       this.positiveCallback = callback;
       return this;
     }
 
-    @Override
-    @Deprecated
-    public Builder setNegative(String text, MaterialDialog.SingleButtonCallback callback) {
-      this.negative = text;
-      this.negativeCallback = callback;
-      return this;
-    }
-
-    @Override
     public Builder negativeText(@StringRes int buttonTextRes) {
-      negativeText(this.context.getString(buttonTextRes));
+      this.negativeTextRes = buttonTextRes;
       return this;
     }
 
-    @Override
     public Builder negativeText(@NonNull CharSequence buttonText) {
       this.negative = buttonText;
       return this;
     }
 
-    @Override
     public Builder onNegative(@NonNull MaterialDialog.SingleButtonCallback callback) {
       this.negativeCallback = callback;
       return this;
     }
 
-    @Override
-    @Deprecated
-    public Builder setNeutral(String text, MaterialDialog.SingleButtonCallback callback) {
-      this.neutral = text;
-      this.neutralCallback = callback;
-      return this;
-    }
-
-    @Override
     public Builder neutralText(@StringRes int buttonTextRes) {
-      neutralText(this.context.getString(buttonTextRes));
+      this.neutralTextRes = buttonTextRes;
       return this;
     }
 
-    @Override
     public Builder neutralText(@NonNull CharSequence buttonText) {
       this.neutral = buttonText;
       return this;
     }
 
-    @Override
     public Builder onNeutral(@NonNull MaterialDialog.SingleButtonCallback callback) {
       this.neutralCallback = callback;
       return this;
     }
 
-    @Override
     public Builder headerScaleType(ImageView.ScaleType scaleType) {
       this.headerScaleType = scaleType;
       return this;
     }
 
-    @Override
     public Builder cancelable(Boolean cancelable) {
       this.isCancelable = cancelable;
       return this;
     }
 
-    @Override
     public Builder scrollable(Boolean scrollable) {
       this.isScrollable = scrollable;
       return this;
     }
 
-    @Override
     public Builder scrollable(Boolean scrollable, Integer maxLines) {
       this.isScrollable = scrollable;
       this.maxLines = maxLines;
       return this;
     }
 
-    @Override
     public Builder autoDismiss(Boolean dismiss) {
       this.isAutoDismiss = dismiss;
       return this;
     }
 
-    @Override
     public Builder dismissListener(DialogInterface.OnDismissListener onDismissListener) {
       this.dismissListener = onDismissListener;
       return this;
@@ -560,7 +507,51 @@ public class MaterialStyledDialog {
 
     @UiThread
     public MaterialStyledDialog build() {
+      if (context == null) {
+        throw new RuntimeException("Context cannot be null when building dialog. If you are deferring dialog creation, please use the '.build(context)' method");
+      }
+      Resources res = context.getResources();
+      if (titleRes != null) {
+        title(res.getString(titleRes));
+      }
+      if (titleDimen != null) {
+        titleSize(res.getDimension(titleDimen));
+      }
+      if (contentRes != null) {
+        content(res.getString(contentRes));
+      }
+      if (contentDimen != null) {
+        contentSize(res.getDimension(contentDimen));
+      }
+      if (neutralTextRes != null) {
+        neutralText(res.getString(neutralTextRes));
+      }
+      if (negativeTextRes != null) {
+        negativeText(res.getString(negativeTextRes));
+      }
+      if (positiveTextRes != null) {
+        positiveText(res.getString(positiveTextRes));
+      }
+      if (pixWidthId != null && pixHeightId != null) {
+        iconSize(res.getDimensionPixelSize(pixWidthId), res.getDimensionPixelOffset(pixHeightId));
+      }
+      if (iconRes != null) {
+        icon(ResourcesCompat.getDrawable(res, iconRes, null));
+      }
+      if (headerDrawableRes != null) {
+        headerDrawable(AppCompatResources.getDrawable(context, headerDrawableRes));
+      }
+      headerColorInt(headerColorRes == null ? UtilsLibrary.getPrimaryColor(context) : UtilsLibrary.getColor(context, headerColorRes));
+      if (paddingLeftDp != null && paddingTopDp != null && paddingRightDp != null && paddingBottomDp != null) {
+        setCustomView(customView, UtilsLibrary.dpToPixels(context, paddingLeftDp), UtilsLibrary.dpToPixels(context, paddingTopDp), UtilsLibrary.dpToPixels(context, paddingRightDp), UtilsLibrary.dpToPixels(context, paddingBottomDp));
+      }
       return new MaterialStyledDialog(this);
+    }
+
+    @UiThread
+    public MaterialStyledDialog build(Context context) {
+      this.context = context;
+      return build();
     }
 
     @UiThread
@@ -568,6 +559,12 @@ public class MaterialStyledDialog {
       MaterialStyledDialog materialStyledDialog = build();
       materialStyledDialog.show();
       return materialStyledDialog;
+    }
+
+    @UiThread
+    public MaterialStyledDialog show(Context context) {
+      this.context = context;
+      return show();
     }
 
   }

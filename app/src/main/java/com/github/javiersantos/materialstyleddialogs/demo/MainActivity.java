@@ -76,17 +76,15 @@ public class MainActivity extends AppCompatActivity {
         final MaterialStyledDialog.Builder dialogHeader_3 = new MaterialStyledDialog.Builder(context)
                 .headerDrawable(R.drawable.header)
                 .icon(new IconicsDrawable(context).icon(MaterialDesignIconic.Icon.gmi_github).color(Color.WHITE))
-                .withDialogAnimation(true)
-                .title("An awesome library?")
-                .content("Do you like this library? Check out my other Open Source libraries and apps!")
-                .positiveText("GitHub")
+                .title("This one is deferred!")
+                .content("It's instantiated at the end +1.")
+                .positiveText("Cool")
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/javiersantos")));
+
                     }
-                })
-                .negativeText("Not now");
+                });
 
         final MaterialStyledDialog.Builder dialogHeader_4 = new MaterialStyledDialog.Builder(context)
                 .headerDrawable(R.drawable.header_2)
@@ -173,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         dialogHeaderView_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogHeader_3.show();
+                dialogHeader_3.show(context);
             }
         });
 
