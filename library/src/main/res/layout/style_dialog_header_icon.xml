@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,17 +26,20 @@
 
     </RelativeLayout>
 
-    <TextView
-        style="@style/MaterialStyledDialogs_Title"
-        android:id="@+id/md_styled_dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <TextView
+    <com.github.javiersantos.materialstyleddialogs.views.TitleTextView
+        android:id="@+id/md_styled_dialog_title"
+        style="@style/MaterialStyledDialogs_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Title Goes Here"/>
+
+    <com.github.javiersantos.materialstyleddialogs.views.ContentTextView
         style="@style/MaterialStyledDialogs_Description"
         android:id="@+id/md_styled_dialog_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra ullamcorper tellus eget imperdiet. Suspendisse potenti. Donec rhoncus mi quis leo posuere, eget dictum turpis porttitor."/>
 
     <ScrollView
         android:layout_width="match_parent"
