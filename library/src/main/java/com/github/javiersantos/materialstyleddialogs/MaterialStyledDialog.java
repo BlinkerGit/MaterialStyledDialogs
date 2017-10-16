@@ -72,16 +72,20 @@ public class MaterialStyledDialog {
       dialogBuilder.onPositive(builder.positiveCallback);
 
     // set negative button
-    if (builder.negative != null && builder.negative.length() != 0)
-      dialogBuilder.negativeText(builder.negative);
-    if (builder.negativeCallback != null)
-      dialogBuilder.onNegative(builder.negativeCallback);
+    if (builder.showNegative) {
+      if (builder.negative != null && builder.negative.length() != 0)
+        dialogBuilder.negativeText(builder.negative);
+      if (builder.negativeCallback != null)
+        dialogBuilder.onNegative(builder.negativeCallback);
+    }
 
     // Set neutral button
-    if (builder.neutral != null && builder.neutral.length() != 0)
-      dialogBuilder.neutralText(builder.neutral);
-    if (builder.neutralCallback != null)
-      dialogBuilder.onNeutral(builder.neutralCallback);
+    if (builder.showNeutral) {
+      if (builder.neutral != null && builder.neutral.length() != 0)
+        dialogBuilder.neutralText(builder.neutral);
+      if (builder.neutralCallback != null)
+        dialogBuilder.onNeutral(builder.neutralCallback);
+    }
 
     // Set auto dismiss when touching the buttons
     dialogBuilder.autoDismiss(builder.isAutoDismiss);
