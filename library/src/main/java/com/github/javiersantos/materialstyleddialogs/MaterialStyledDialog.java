@@ -259,6 +259,7 @@ public class MaterialStyledDialog {
     protected ImageView.ScaleType headerScaleType;
 
     protected CharSequence positive, negative, neutral;
+    protected boolean showNegative, showNeutral;
     protected MaterialDialog.SingleButtonCallback positiveCallback, negativeCallback, neutralCallback;
     protected DialogInterface.OnDismissListener dismissListener;
     protected Integer iconWidth, iconHeight;
@@ -459,6 +460,11 @@ public class MaterialStyledDialog {
       return this;
     }
 
+    public Builder showNegative(boolean show) {
+      showNegative = show;
+      return this;
+    }
+
     public Builder neutralText(@StringRes int buttonTextRes) {
       this.neutralTextRes = buttonTextRes;
       return this;
@@ -471,6 +477,11 @@ public class MaterialStyledDialog {
 
     public Builder onNeutral(@NonNull MaterialDialog.SingleButtonCallback callback) {
       this.neutralCallback = callback;
+      return this;
+    }
+
+    public Builder showNeutral(boolean show) {
+      showNeutral = show;
       return this;
     }
 
