@@ -451,11 +451,13 @@ public class MaterialStyledDialog {
 
     public Builder negativeText(@StringRes int buttonTextRes) {
       this.negativeTextRes = buttonTextRes;
+      showNegative = true;
       return this;
     }
 
     public Builder negativeText(@NonNull CharSequence buttonText) {
       this.negative = buttonText;
+      showNegative = true;
       return this;
     }
 
@@ -471,11 +473,13 @@ public class MaterialStyledDialog {
 
     public Builder neutralText(@StringRes int buttonTextRes) {
       this.neutralTextRes = buttonTextRes;
+      showNeutral = true;
       return this;
     }
 
     public Builder neutralText(@NonNull CharSequence buttonText) {
       this.neutral = buttonText;
+      showNeutral = true;
       return this;
     }
 
